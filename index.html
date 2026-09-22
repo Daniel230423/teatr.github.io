@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Склад студии — реквизит и декорации</title>
+<style>
+:root{
+  --wb:#cb11ab; --wb2:#e313bf; --ink:#18181b; --muted:#71717a; --line:#e4e4e7;
+  --bg:#f6f6f7; --card:#fff; --ok:#16a34a; --busy:#f59e0b; --dark:#27272a;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
+button,input,select,textarea{font:inherit} button{cursor:pointer;border:0}
+.header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
+.nav{max-width:1440px;margin:auto;height:68px;display:flex;align-items:center;gap:24px;padding:0 24px}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px;color:var(--wb)}
+.logo span{color:var(--ink)}
+.search{flex:1;max-width:650px;position:relative}.search input{width:100%;padding:14px 18px;border:0;background:#f1f1f2;border-radius:12px;outline:none}
+.nav-actions{display:flex;gap:8px;margin-left:auto}.btn{padding:11px 16px;border-radius:10px;background:#f1f1f2}.btn.primary{background:var(--wb);color:#fff}.btn.dark{background:var(--dark);color:#fff}
+.container{max-width:1440px;margin:auto;padding:26px 24px 60px}
+.hero{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.hero h1{margin:0 0 6px;font-size:32px;letter-spacing:-1.2px}.hero p{margin:0;color:var(--muted)}
+.layout{display:grid;grid-template-columns:235px 1fr;gap:24px}.sidebar{background:#fff;border-radius:16px;padding:18px;height:max-content;border:1px solid var(--line)}
+.side-title{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:800;margin:4px 8px 12px}
+.cat{display:flex;justify-content:space-between;padding:11px 9px;border-radius:9px;margin-bottom:3px}.cat.active,.cat:hover{background:#fce8f8}.cat.active{color:var(--wb);font-weight:800}.count{color:var(--muted);font-size:12px}
+.toolbar{display:flex;justify-content:space-between;gap:12px;margin-bottom:16px;align-items:center}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--line);transition:.18s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px #0000000d}
+.photo{height:210px;background:linear-gradient(135deg,#eee,#fafafa);display:flex;align-items:center;justify-content:center;color:#aaa;position:relative;font-size:44px}.status{position:absolute;left:10px;top:10px;padding:6px 9px;border-radius:8px;background:#fff;font-size:11px;font-weight:800}.status.ok{color:var(--ok)}.status.busy{color:#b45309}.card-body{padding:14px}.card h3{font-size:16px;margin:0 0 7px}.meta{font-size:12px;color:var(--muted);line-height:1.55}.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.tag{font-size:10px;background:#f1f1f2;padding:4px 7px;border-radius:6px}.adminbar{display:none;background:#18181b;color:#fff}.admin .adminbar{display:block}.admin .guest-only{display:none}.adminbar .inner{max-width:1440px;margin:auto;padding:9px 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.empty{text-align:center;padding:70px 20px;color:var(--muted);grid-column:1/-1}
+.modal-bg{display:none;position:fixed;inset:0;background:#0008;z-index:50;align-items:center;justify-content:center;padding:20px}.modal-bg.open{display:flex}.modal{background:#fff;border-radius:18px;max-width:620px;width:100%;max-height:90vh;overflow:auto;padding:24px}.modal h2{margin:0 0 20px}.form{display:grid;gap:13px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;outline:none}.field textarea{min-height:90px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.login{max-width:390px}.login-note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}
+.toast{position:fixed;right:20px;bottom:20px;background:#18181b;color:#fff;padding:12px 16px;border-radius:10px;z-index:100;display:none}
+@media(max-width:1050px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:780px){.layout{grid-template-columns:1fr}.sidebar{display:none}.grid{grid-template-columns:repeat(2,1fr)}.search{display:none}.hero{align-items:start;flex-direction:column}}@media(max-width:480px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.nav{padding:0 14px}.container{padding:20px 14px}.nav-actions .btn:first-child{display:none}}
+</style>
+</head>
+<body>
+<header class="header"><nav class="nav">
+  <div class="logo">Склад<span>Театра</span></div>
+  <div class="search"><input id="search" placeholder="Поиск реквизита, артикула, тегов..."></div>
+  <div class="nav-actions"><button class="btn" onclick="openLogin()">Администратор</button><button class="btn primary" onclick="copyGuestLink()">Ссылка для педагогов</button></div>
+</nav></header>
+<div class="adminbar"><div class="inner"><span>Режим администратора</span><div><button class="btn primary" onclick="openItem()">+ Добавить предмет</button> <button class="btn" onclick="logout()">Выйти</button></div></div></div>
+
+<main class="container">
+  <section class="hero"><div><h1>Реквизит и декорации</h1><p id="subtitle">Онлайн-каталог студии · <span id="total"></span></p></div></section>
+  <div class="layout">
+    <aside class="sidebar"><div class="side-title">Категории</div><div id="categories"></div></aside>
+    <section>
+      <div class="toolbar"><div class="chips" id="statusFilters"><button class="chip active" data-status="all">Все</button><button class="chip" data-status="available">В наличии</button><button class="chip" data-status="busy">Занято</button></div><select id="sort" class="chip"><option value="name">По названию</option><option value="article">По артикулу</option><option value="status">По статусу</option></select></div>
+      <div class="grid" id="grid"></div>
+    </section>
+  </div>
+</main>
+
+<div class="modal-bg" id="loginModal"><div class="modal login"><h2>Вход администратора</h2><div class="form"><div class="field"><label>Пароль</label><input id="password" type="password" placeholder="Введите пароль"></div></div><div class="modal-actions"><button class="btn" onclick="closeModal('loginModal')">Отмена</button><button class="btn primary" onclick="login()">Войти</button></div><div class="login-note">Демо-режим: пароль хранится в коде страницы. Для настоящей авторизации нужен сервер или внешний сервис аутентификации.</div></div></div>
+
+<div class="modal-bg" id="itemModal"><div class="modal"><h2 id="itemTitle">Новый предмет</h2><div class="form">
+  <div class="row"><div class="field"><label>Название *</label><input id="fName"></div><div class="field"><label>Артикул</label><input id="fArticle" placeholder="Напр. REC-001"></div></div>
+  <div class="row"><div class="field"><label>Категория</label><select id="fCategory"></select></div><div class="field"><label>Статус</label><select id="fStatus"><option value="available">В наличии</option><option value="busy">Занято</option></select></div></div>
+  <div class="row"><div class="field"><label>Место хранения</label><input id="fLocation" placeholder="Стеллаж 2 · полка 3"></div><div class="field"><label>Кому / где занято</label><input id="fBooked" placeholder="Спектакль «...»"></div></div>
+  <div class="field"><label>Теги</label><input id="fTags" placeholder="дерево, старина, стол, чехов"></div>
+  <div class="field"><label>Описание</label><textarea id="fDesc"></textarea></div>
+</div><div class="modal-actions"><button class="btn" onclick="closeModal('itemModal')">Отмена</button><button class="btn primary" onclick="saveItem()">Сохранить</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const ADMIN_PASSWORD = "teatr123"; // СМЕНИТЕ ПАРОЛЬ ПЕРЕД ПУБЛИКАЦИЕЙ
+const defaultData=[
+ {id:1,name:"Старинный чемодан",article:"REC-001",category:"Реквизит",status:"available",location:"Стеллаж 1 · полка 2",booked:"",tags:["винтаж","дорога","дерево"],desc:"Коричневый чемодан для сценического использования."},
+ {id:2,name:"Деревянный стул",article:"DEC-014",category:"Мебель",status:"busy",location:"Склад · зона Б",booked:"«Вишнёвый сад»",tags:["стул","дерево","мебель"],desc:"Массивный деревянный стул."},
+ {id:3,name:"Подсвечник",article:"REC-027",category:"Реквизит",status:"available",location:"Стеллаж 2 · полка 1",booked:"",tags:["металл","свечи","старина"],desc:"Декоративный металлический подсвечник."},
+ {id:4,name:"Чёрная ширма",article:"DEC-003",category:"Декорации",status:"available",location:"Склад · зона А",booked:"",tags:["ширма","чёрный","трансформация"],desc:"Складная чёрная ширма."},
+ {id:5,name:"Самовар",article:"REC-031",category:"Реквизит",status:"available",location:"Стеллаж 2 · полка 4",booked:"",tags:["русский быт","чай","металл"],desc:"Декоративный самовар."},
+ {id:6,name:"Кресло",article:"DEC-021",category:"Мебель",status:"busy",location:"Зал",booked:"«Дядя Ваня»",tags:["кресло","мебель","классика"],desc:"Сценическое кресло."}
+];
+let items=JSON.parse(localStorage.getItem("theatreStock")||"null")||defaultData;
+let isAdmin=localStorage.getItem("theatreAdmin")==="1", currentCategory="Все", currentStatus="all", editId=null;
+
+function saveData(){localStorage.setItem("theatreStock",JSON.stringify(items))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function render(){
+ document.body.classList.toggle("admin",isAdmin);
+ const cats=["Все",...new Set(items.map(x=>x.category).filter(Boolean))];
+ document.getElementById("categories").innerHTML=cats.map(c=>`<div class="cat ${currentCategory===c?"active":""}" onclick="setCat('${esc(c)}')">${esc(c)} <span class="count">${c==="Все"?items.length:items.filter(x=>x.category===c).length}</span></div>`).join("");
+ let q=document.getElementById("search").value.toLowerCase();
+ let list=items.filter(x=>(currentCategory==="Все"||x.category===currentCategory)&&(currentStatus==="all"||x.status===currentStatus)&&[x.name,x.article,x.category,x.location,x.booked,...x.tags].join(" ").toLowerCase().includes(q));
+ const sort=document.getElementById("sort").value;
+ list.sort((a,b)=>String(a[sort]||"").localeCompare(String(b[sort]||""),"ru"));
+ document.getElementById("total").textContent=`${items.length} предметов`;
+ document.getElementById("grid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">Ничего не найдено.<br><small>Попробуйте изменить поиск или фильтры.</small></div>`;
+}
+function card(x){
+ const icon=x.category==="Мебель"?"▣":x.category==="Декорации"?"◫":"◇";
+ return `<article class="card"><div class="photo">${icon}<span class="status ${x.status==="available"?"ok":"busy"}">${x.status==="available"?"В НАЛИЧИИ":"ЗАНЯТО"}</span></div><div class="card-body"><h3>${esc(x.name)}</h3><div class="meta"><b>Арт.:</b> ${esc(x.article||"—")}<br><b>Категория:</b> ${esc(x.category||"—")}<br><b>Где:</b> ${esc(x.location||"—")}${x.status==="busy"?`<br><b>Занято:</b> ${esc(x.booked||"—")}`:""}</div><div class="tags">${(x.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join("")}</div>${isAdmin?`<div style="display:flex;gap:7px;margin-top:13px"><button class="btn" onclick="openItem(${x.id})">Изменить</button><button class="btn" onclick="removeItem(${x.id})">Удалить</button></div>`:""}</div></article>`;
+}
+function setCat(c){currentCategory=c;render()}
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+document.querySelectorAll("#statusFilters .chip").forEach(b=>b.onclick=()=>{currentStatus=b.dataset.status;document.querySelectorAll("#statusFilters .chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()});
+function openLogin(){document.getElementById("loginModal").classList.add("open");setTimeout(()=>document.getElementById("password").focus(),50)}
+function login(){if(document.getElementById("password").value===ADMIN_PASSWORD){isAdmin=true;localStorage.setItem("theatreAdmin","1");closeModal("loginModal");toast("Режим администратора включён");render()}else toast("Неверный пароль")}
+function logout(){isAdmin=false;localStorage.removeItem("theatreAdmin");render();toast("Вы вышли из режима администратора")}
+function closeModal(id){document.getElementById(id).classList.remove("open")}
+function openItem(id=null){
+ if(!isAdmin)return openLogin(); editId=id;
+ let x=id?items.find(a=>a.id===id):{name:"",article:"",category:"Реквизит",status:"available",location:"",booked:"",tags:[],desc:""};
+ document.getElementById("itemTitle").textContent=id?"Редактировать предмет":"Новый предмет";
+ document.getElementById("fName").value=x.name;document.getElementById("fArticle").value=x.article;document.getElementById("fStatus").value=x.status;document.getElementById("fLocation").value=x.location;document.getElementById("fBooked").value=x.booked;document.getElementById("fTags").value=(x.tags||[]).join(", ");document.getElementById("fDesc").value=x.desc||"";
+ let cats=[...new Set(items.map(a=>a.category).filter(Boolean)), "Реквизит","Декорации","Мебель","Костюмы"];
+ document.getElementById("fCategory").innerHTML=[...new Set(cats)].map(c=>`<option>${esc(c)}</option>`).join("");document.getElementById("fCategory").value=x.category;
+ document.getElementById("itemModal").classList.add("open");
+}
+function saveItem(){
+ let name=document.getElementById("fName").value.trim();if(!name)return toast("Введите название");
+ let obj={id:editId||Date.now(),name,article:document.getElementById("fArticle").value.trim(),category:document.getElementById("fCategory").value,status:document.getElementById("fStatus").value,location:document.getElementById("fLocation").value.trim(),booked:document.getElementById("fBooked").value.trim(),tags:document.getElementById("fTags").value.split(",").map(x=>x.trim()).filter(Boolean),desc:document.getElementById("fDesc").value.trim()};
+ if(editId)items=items.map(x=>x.id===editId?obj:x);else items.push(obj);saveData();closeModal("itemModal");render();toast("Предмет сохранён");
+}
+function removeItem(id){if(confirm("Удалить этот предмет?")){items=items.filter(x=>x.id!==id);saveData();render();toast("Предмет удалён")}}
+function copyGuestLink(){let url=location.href.split("?")[0]+"?view=guest";navigator.clipboard?.writeText(url);toast("Гостевая ссылка скопирована")}
+function toast(s){let t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",2200)}
+if(new URLSearchParams(location.search).get("view")==="guest"){document.querySelector(".nav-actions .btn:first-child").style.display="none"}
+render();
+</script>
+</body>
+</html>

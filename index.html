@@ -1,117 +1,1183 @@
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Склад студии — реквизит и декорации</title>
-<style>
-:root{
-  --wb:#cb11ab; --wb2:#e313bf; --ink:#18181b; --muted:#71717a; --line:#e4e4e7;
-  --bg:#f6f6f7; --card:#fff; --ok:#16a34a; --busy:#f59e0b; --dark:#27272a;
-}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif}
-button,input,select,textarea{font:inherit} button{cursor:pointer;border:0}
-.header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line)}
-.nav{max-width:1440px;margin:auto;height:68px;display:flex;align-items:center;gap:24px;padding:0 24px}
-.logo{font-size:25px;font-weight:900;letter-spacing:-1px;color:var(--wb)}
-.logo span{color:var(--ink)}
-.search{flex:1;max-width:650px;position:relative}.search input{width:100%;padding:14px 18px;border:0;background:#f1f1f2;border-radius:12px;outline:none}
-.nav-actions{display:flex;gap:8px;margin-left:auto}.btn{padding:11px 16px;border-radius:10px;background:#f1f1f2}.btn.primary{background:var(--wb);color:#fff}.btn.dark{background:var(--dark);color:#fff}
-.container{max-width:1440px;margin:auto;padding:26px 24px 60px}
-.hero{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.hero h1{margin:0 0 6px;font-size:32px;letter-spacing:-1.2px}.hero p{margin:0;color:var(--muted)}
-.layout{display:grid;grid-template-columns:235px 1fr;gap:24px}.sidebar{background:#fff;border-radius:16px;padding:18px;height:max-content;border:1px solid var(--line)}
-.side-title{font-size:12px;color:var(--muted);text-transform:uppercase;font-weight:800;margin:4px 8px 12px}
-.cat{display:flex;justify-content:space-between;padding:11px 9px;border-radius:9px;margin-bottom:3px}.cat.active,.cat:hover{background:#fce8f8}.cat.active{color:var(--wb);font-weight:800}.count{color:var(--muted);font-size:12px}
-.toolbar{display:flex;justify-content:space-between;gap:12px;margin-bottom:16px;align-items:center}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--line);transition:.18s}.card:hover{transform:translateY(-2px);box-shadow:0 10px 30px #0000000d}
-.photo{height:210px;background:linear-gradient(135deg,#eee,#fafafa);display:flex;align-items:center;justify-content:center;color:#aaa;position:relative;font-size:44px}.status{position:absolute;left:10px;top:10px;padding:6px 9px;border-radius:8px;background:#fff;font-size:11px;font-weight:800}.status.ok{color:var(--ok)}.status.busy{color:#b45309}.card-body{padding:14px}.card h3{font-size:16px;margin:0 0 7px}.meta{font-size:12px;color:var(--muted);line-height:1.55}.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.tag{font-size:10px;background:#f1f1f2;padding:4px 7px;border-radius:6px}.adminbar{display:none;background:#18181b;color:#fff}.admin .adminbar{display:block}.admin .guest-only{display:none}.adminbar .inner{max-width:1440px;margin:auto;padding:9px 24px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.empty{text-align:center;padding:70px 20px;color:var(--muted);grid-column:1/-1}
-.modal-bg{display:none;position:fixed;inset:0;background:#0008;z-index:50;align-items:center;justify-content:center;padding:20px}.modal-bg.open{display:flex}.modal{background:#fff;border-radius:18px;max-width:620px;width:100%;max-height:90vh;overflow:auto;padding:24px}.modal h2{margin:0 0 20px}.form{display:grid;gap:13px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;outline:none}.field textarea{min-height:90px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-.login{max-width:390px}.login-note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}
-.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}.photo-thumb{height:88px;border-radius:9px;overflow:hidden;background:#f1f1f2;position:relative}.photo-thumb img{width:100%;height:100%;object-fit:cover}.photo-remove{position:absolute;right:5px;top:5px;width:23px;height:23px;border-radius:50%;background:#fff;color:#18181b;font-weight:900}.upload-box{border:1px dashed #cfcfd4;border-radius:10px;padding:14px;text-align:center;color:#71717a;background:#fafafa}.upload-label{display:block;cursor:pointer}.upload-box input{display:none}.card-gallery{position:absolute;inset:0}.card-gallery img{width:100%;height:100%;object-fit:cover}.gallery-count{position:absolute;right:10px;bottom:10px;background:#18181bcc;color:#fff;padding:5px 8px;border-radius:7px;font-size:11px}.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}.photo-thumb{height:88px;border-radius:9px;overflow:hidden;background:#f1f1f2;position:relative}.photo-thumb img{width:100%;height:100%;object-fit:cover}.photo-remove{position:absolute;right:5px;top:5px;width:23px;height:23px;border-radius:50%;background:#fff}.upload-box{border:1px dashed #ccc;border-radius:10px;padding:14px;text-align:center}.upload-box input{display:none}.upload-label{display:block;cursor:pointer;color:#71717a}.toast{position:fixed;right:20px;bottom:20px;background:#18181b;color:#fff;padding:12px 16px;border-radius:10px;z-index:100;display:none}
-@media(max-width:1050px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:780px){.layout{grid-template-columns:1fr}.sidebar{display:none}.grid{grid-template-columns:repeat(2,1fr)}.search{display:none}.hero{align-items:start;flex-direction:column}}@media(max-width:480px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.nav{padding:0 14px}.container{padding:20px 14px}.nav-actions .btn:first-child{display:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Склад театра — реквизит и декорации</title>
+  <style>
+    :root {
+      --pink: #cb11ab;
+      --pink-dark: #9d0d82;
+      --ink: #18181b;
+      --muted: #6b7280;
+      --line: #e4e4e7;
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --ok: #16a34a;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --dark: #27272a;
+      --shadow: rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: Inter, Arial, sans-serif; }
+    body { min-height: 100vh; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: none; }
+    a { color: inherit; text-decoration: none; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1440px;
+      height: 70px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--pink);
+      white-space: nowrap;
+    }
+
+    .logo span { color: var(--ink); }
+
+    .search { flex: 1; max-width: 700px; position: relative; }
+    .search input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: #f1f1f2;
+      outline: none;
+    }
+    .search input:focus { border-color: rgba(203,17,171,0.35); background: #fff; }
+
+    .nav-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 16px;
+      border-radius: 10px;
+      background: #f1f1f2;
+      color: var(--ink);
+      transition: .18s ease;
+      font-weight: 600;
+    }
+    .btn:hover { filter: brightness(0.98); }
+    .btn.primary {
+      background: var(--pink);
+      color: white;
+    }
+    .btn.primary:hover { background: var(--pink-dark); }
+    .btn.dark { background: var(--dark); color: white; }
+    .btn.danger { background: #fee2e2; color: var(--danger); }
+    .btn:disabled { opacity: .6; cursor: wait; }
+
+    .adminbar {
+      display: none;
+      background: #18181b;
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    body.admin .adminbar { display: block; }
+
+    .adminbar-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 24px 60px;
+    }
+
+    .hero {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: clamp(30px, 3vw, 40px);
+      letter-spacing: -1.2px;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sidebar {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 14px;
+      position: sticky;
+      top: 90px;
+    }
+
+    .side-title {
+      margin: 4px 8px 12px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .cat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: .15s ease;
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .cat:hover, .cat.active {
+      background: #fce8f8;
+      color: var(--pink);
+      font-weight: 700;
+    }
+    .cat .count {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      transition: .15s ease;
+      font-size: 13px;
+    }
+    .chip.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .sort-select {
+      min-width: 170px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+      min-height: 330px;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px var(--shadow);
+    }
+
+    .photo {
+      position: relative;
+      height: 210px;
+      background: linear-gradient(135deg, #f8f8f8, #f1f1f2);
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      overflow: hidden;
+    }
+
+    .card-gallery {
+      position: absolute;
+      inset: 0;
+      background: #f3f4f6;
+    }
+    .card-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-count {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      background: rgba(24, 24, 27, 0.8);
+      color: #fff;
+      border-radius: 7px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .status-pill {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      background: #fff;
+      color: var(--ok);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      border-radius: 9px;
+      padding: 6px 9px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .status-pill.busy { color: var(--warn); }
+
+    .card-body {
+      padding: 14px 14px 16px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .meta b { color: var(--ink); }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+      min-height: 22px;
+    }
+    .tag {
+      background: #f3f4f6;
+      color: var(--ink);
+      border-radius: 7px;
+      font-size: 10px;
+      line-height: 1;
+      padding: 6px 7px;
+      font-weight: 700;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 80px 20px 40px;
+      background: rgba(255,255,255,0.5);
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+    }
+
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+    .modal-bg.open { display: flex; }
+
+    .modal {
+      width: min(100%, 620px);
+      max-height: 90vh;
+      overflow: auto;
+      padding: 22px 22px 18px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.22);
+    }
+    .modal h2 {
+      margin: 0 0 18px;
+      font-size: 26px;
+      letter-spacing: -0.6px;
+    }
+
+    .form {
+      display: grid;
+      gap: 14px;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(203,17,171,0.35);
+      box-shadow: 0 0 0 3px rgba(203,17,171,0.08);
+    }
+    .field textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .upload-box {
+      border: 1px dashed #d1d5db;
+      border-radius: 12px;
+      background: #fafafa;
+      padding: 14px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .upload-box input { display: none; }
+    .upload-label {
+      display: block;
+      cursor: pointer;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .photo-thumb {
+      position: relative;
+      height: 88px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f3f4f6;
+    }
+    .photo-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-remove {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      color: var(--ink);
+      font-weight: 900;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .login-modal { max-width: 420px; }
+    .login-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 120;
+      display: none;
+      background: #18181b;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    }
+
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .search { display: none; }
+      .hero { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 520px) {
+      .nav { padding: 0 14px; }
+      .container { padding: 22px 14px 48px; }
+      .grid { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
+      .nav-actions .btn:first-child { display: none; }
+      .adminbar-inner { padding-inline: 14px; }
+    }
+  </style>
 </head>
 <body>
-<header class="header"><nav class="nav">
-  <div class="logo">Склад<span>Театра</span></div>
-  <div class="search"><input id="search" placeholder="Поиск реквизита, артикула, тегов..."></div>
-  <div class="nav-actions"><button class="btn" onclick="openLogin()">Администратор</button><button class="btn primary" onclick="copyGuestLink()">Ссылка для педагогов</button></div>
-</nav></header>
-<div class="adminbar"><div class="inner"><span>Режим администратора</span><div><button class="btn primary" onclick="openItem()">+ Добавить предмет</button> <button class="btn" onclick="logout()">Выйти</button></div></div></div>
+  <header class="header">
+    <nav class="nav">
+      <div class="logo">Склад<span>Театра</span></div>
+      <div class="search">
+        <input id="search" type="text" placeholder="Поиск реквизита, артикула, тегов..." />
+      </div>
+      <div class="nav-actions">
+        <button class="btn" id="adminBtn" type="button" onclick="openLogin()">Администратор</button>
+        <button class="btn primary" type="button" onclick="copyGuestLink()">Ссылка для педагогов</button>
+      </div>
+    </nav>
+  </header>
 
-<main class="container">
-  <section class="hero"><div><h1>Реквизит и декорации</h1><p id="subtitle">Онлайн-каталог студии · <span id="total"></span></p></div></section>
-  <div class="layout">
-    <aside class="sidebar"><div class="side-title">Категории</div><div id="categories"></div></aside>
-    <section>
-      <div class="toolbar"><div class="chips" id="statusFilters"><button class="chip active" data-status="all">Все</button><button class="chip" data-status="available">В наличии</button><button class="chip" data-status="busy">Занято</button></div><select id="sort" class="chip"><option value="name">По названию</option><option value="article">По артикулу</option><option value="status">По статусу</option></select></div>
-      <div class="grid" id="grid"></div>
-    </section>
+  <div class="adminbar">
+    <div class="adminbar-inner">
+      <span>Режим администратора</span>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="btn primary" type="button" onclick="openItem()">+ Добавить предмет</button>
+        <button class="btn" type="button" onclick="logout()">Выйти</button>
+      </div>
+    </div>
   </div>
-</main>
 
-<div class="modal-bg" id="loginModal"><div class="modal login"><h2>Вход администратора</h2><div class="form"><div class="field"><label>Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="admin@example.com"></div><div class="field"><label>Пароль</label><input id="password" type="password" autocomplete="current-password" placeholder="Введите пароль" onkeydown="if(event.key==='Enter')login()"></div></div><div class="modal-actions"><button class="btn" onclick="closeModal('loginModal')">Отмена</button><button class="btn primary" id="loginBtn" onclick="login()">Войти</button></div><div class="login-note">Вход выполняется через Supabase Auth. Используйте email и пароль пользователя, которого вы создали в разделе Authentication → Users.</div></div></div>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Реквизит и декорации</h1>
+        <p id="subtitle">Онлайн-каталог студии · <span id="total">0 предметов</span></p>
+      </div>
+    </section>
 
-<div class="modal-bg" id="itemModal"><div class="modal"><h2 id="itemTitle">Новый предмет</h2><div class="form">
-  <div class="row"><div class="field"><label>Название *</label><input id="fName"></div><div class="field"><label>Артикул</label><input id="fArticle" placeholder="Напр. REC-001"></div></div>
-  <div class="row"><div class="field"><label>Категория</label><select id="fCategory"></select></div><div class="field"><label>Статус</label><select id="fStatus"><option value="available">В наличии</option><option value="busy">Занято</option></select></div></div>
-  <div class="row"><div class="field"><label>Место хранения</label><input id="fLocation" placeholder="Стеллаж 2 · полка 3"></div><div class="field"><label>Кому / где занято</label><input id="fBooked" placeholder="Спектакль «...»"></div></div>
-  <div class="field"><label>Фотографии предмета</label><div class="upload-box"><label for="fPhotos" class="upload-label">Добавить несколько фотографий<br><small>JPG, PNG, WebP</small></label><input id="fPhotos" type="file" accept="image/*" multiple></div><div class="photo-grid" id="photoPreview"></div></div><div class="field"><label>Теги</label><input id="fTags" placeholder="дерево, старина, стол, чехов"></div>
-  <div class="field"><label>Описание</label><textarea id="fDesc"></textarea></div>
-</div><div class="modal-actions"><button class="btn" onclick="closeModal('itemModal')">Отмена</button><button class="btn primary" onclick="saveItem()">Сохранить</button></div></div></div>
-<div class="toast" id="toast"></div>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="side-title">Категории</div>
+        <div id="categories"></div>
+      </aside>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL="https://urgxxovcrqwfuyntstin.supabase.co";
-const SUPABASE_KEY="sb_publishable_5pRp2j9K_OqA5roEiJYb0A_bty8eylL";
-const {createClient}=window.supabase; const db=createClient(SUPABASE_URL,SUPABASE_KEY);
-let items=[],isAdmin=false,currentCategory="Все",currentStatus="all",editId=null,editPhotos=[];
-async function init(){
- const {data:{session}}=await db.auth.getSession();
- isAdmin=!!session;
- await loadItems(); render();
- db.auth.onAuthStateChange(async(_,session)=>{ isAdmin=!!session; await loadItems(); render(); });
-}
-async function loadItems(){const {data,error}=await db.from("items").select("*").order("name");if(error){toast("Ошибка базы: "+error.message);return}const ids=(data||[]).map(x=>x.id);let ps=[];if(ids.length){const r=await db.from("item_photos").select("*").in("item_id",ids).order("sort_order");ps=r.data||[]}items=(data||[]).map(x=>({...x,photos:ps.filter(p=>p.item_id===x.id).map(p=>p.public_url)}))}
-function render(){
- document.body.classList.toggle("admin",isAdmin);
- const cats=["Все",...new Set(items.map(x=>x.category).filter(Boolean))];
- document.getElementById("categories").innerHTML=cats.map(c=>`<div class="cat ${currentCategory===c?"active":""}" onclick="setCat('${esc(c)}')">${esc(c)} <span class="count">${c==="Все"?items.length:items.filter(x=>x.category===c).length}</span></div>`).join("");
- let q=document.getElementById("search").value.toLowerCase();
- let list=items.filter(x=>(currentCategory==="Все"||x.category===currentCategory)&&(currentStatus==="all"||x.status===currentStatus)&&[x.name,x.article,x.category,x.location,x.booked,...x.tags].join(" ").toLowerCase().includes(q));
- const sort=document.getElementById("sort").value;
- list.sort((a,b)=>String(a[sort]||"").localeCompare(String(b[sort]||""),"ru"));
- document.getElementById("total").textContent=`${items.length} предметов`;
- document.getElementById("grid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">Ничего не найдено.<br><small>Попробуйте изменить поиск или фильтры.</small></div>`;
-}
-function card(x){const icon=x.category==="Мебель"?"▣":x.category==="Декорации"?"◫":"◇";const g=x.photos?.length?`<div class="card-gallery"><img src="${x.photos[0]}" alt="${esc(x.name)}">${x.photos.length>1?`<span class="gallery-count">📷 ${x.photos.length}</span>`:""}</div>`:`<span>${icon}</span>`;return `<article class="card"><div class="photo">${g}<span class="status ${x.status==="available"?"ok":"busy"}">${x.status==="available"?"В НАЛИЧИИ":"ЗАНЯТО"}</span></div><div class="card-body"><h3>${esc(x.name)}</h3><div class="meta"><b>Арт.:</b> ${esc(x.article||"—")}<br><b>Категория:</b> ${esc(x.category||"—")}<br><b>Где:</b> ${esc(x.location||"—")}${x.status==="busy"?`<br><b>Занято:</b> ${esc(x.booked_for||"—")}`:""}</div><div class="tags">${String(x.tags||"").split(",").map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag">#${esc(t)}</span>`).join("")}</div>${isAdmin?`<div style="display:flex;gap:7px;margin-top:13px"><button class="btn" onclick="openItem('${x.id}')">Изменить</button><button class="btn" onclick="removeItem('${x.id}')">Удалить</button></div>`:""}</div></article>`}
-function setCat(c){currentCategory=c;render()}document.getElementById("search").addEventListener("input",render);document.getElementById("sort").addEventListener("change",render);document.querySelectorAll("#statusFilters .chip").forEach(b=>b.onclick=()=>{currentStatus=b.dataset.status;document.querySelectorAll("#statusFilters .chip").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()});
-async function openLogin(){
- const m=document.getElementById("loginModal");
- m.classList.add("open");
- setTimeout(()=>document.getElementById("loginEmail").focus(),50);
-}
-async function login(){
- const email=document.getElementById("loginEmail").value.trim();
- const password=document.getElementById("password").value;
- if(!email||!password)return toast("Введите email и пароль");
- const btn=document.getElementById("loginBtn"); btn.disabled=true; btn.textContent="Вход…";
- const {data,error}=await db.auth.signInWithPassword({email,password});
- btn.disabled=false; btn.textContent="Войти";
- if(error){ console.error(error); toast("Не удалось войти: "+error.message); return; }
- isAdmin=!!data.session;
- closeModal("loginModal");
- await loadItems(); render();
- toast("Вы вошли как администратор");
-}
-function openItem(id=null){if(!isAdmin)return openLogin();editId=id;const x=id?items.find(a=>a.id===id):{name:"",article:"",category:"Реквизит",status:"available",location:"",booked_for:"",tags:"",description:"",photos:[]};editPhotos=[...(x.photos||[])];document.getElementById("itemTitle").textContent=id?"Редактировать предмет":"Новый предмет";document.getElementById("fName").value=x.name||"";document.getElementById("fArticle").value=x.article||"";document.getElementById("fStatus").value=x.status||"available";document.getElementById("fLocation").value=x.location||"";document.getElementById("fBooked").value=x.booked_for||"";document.getElementById("fTags").value=x.tags||"";document.getElementById("fDesc").value=x.description||"";const cats=[...new Set([...items.map(a=>a.category).filter(Boolean),"Реквизит","Декорации","Мебель","Костюмы","Текстиль","Освещение","Прочее"])];document.getElementById("fCategory").innerHTML=cats.map(c=>`<option>${esc(c)}</option>`).join("");document.getElementById("fCategory").value=x.category||"Реквизит";renderPhotoPreview();document.getElementById("itemModal").classList.add("open")}
-function renderPhotoPreview(){document.getElementById("photoPreview").innerHTML=editPhotos.map((p,i)=>{const u=typeof p==="string"?p:p.data;return `<div class="photo-thumb"><img src="${u}"><button type="button" class="photo-remove" onclick="removePhoto(${i})">×</button></div>`}).join("")}function removePhoto(i){editPhotos.splice(i,1);renderPhotoPreview()}document.getElementById("fPhotos").addEventListener("change",async e=>{for(const f of e.target.files){if(!f.type.startsWith("image/"))continue;const data=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f)});editPhotos.push({data,name:f.name})}renderPhotoPreview();e.target.value=""});
-async function saveItem(){const name=document.getElementById("fName").value.trim();if(!name)return toast("Введите название");const payload={name,article:document.getElementById("fArticle").value.trim(),category:document.getElementById("fCategory").value,status:document.getElementById("fStatus").value,location:document.getElementById("fLocation").value.trim(),booked_for:document.getElementById("fBooked").value.trim(),tags:document.getElementById("fTags").value.trim(),description:document.getElementById("fDesc").value.trim()};let id=editId;if(id){const {error}=await db.from("items").update(payload).eq("id",id);if(error)return toast(error.message)}else{const {data,error}=await db.from("items").insert(payload).select().single();if(error)return toast(error.message);id=data.id}const old=items.find(x=>x.id===id)?.photos||[];const keep=editPhotos.filter(x=>typeof x==="string");for(const url of old.filter(u=>!keep.includes(u))){const path=url.split("/item-photos/")[1];if(path)await db.storage.from("item-photos").remove([path]);await db.from("item_photos").delete().eq("item_id",id).eq("public_url",url)}const added=editPhotos.filter(x=>typeof x!=="string");for(let i=0;i<added.length;i++){const p=added[i],path=`${id}/${crypto.randomUUID()}-${p.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;const blob=await (await fetch(p.data)).blob();const up=await db.storage.from("item-photos").upload(path,blob,{contentType:blob.type});if(up.error){toast(up.error.message);continue}const {data:pub}=db.storage.from("item-photos").getPublicUrl(path);await db.from("item_photos").insert({item_id:id,storage_path:path,public_url:pub.publicUrl,sort_order:keep.length+i})}closeModal("itemModal");await loadItems();render();toast("Предмет сохранён")}
-async function removeItem(id){if(!confirm("Удалить предмет?"))return;const r=await db.from("item_photos").select("storage_path").eq("item_id",id);if(r.data?.length)await db.storage.from("item-photos").remove(r.data.map(x=>x.storage_path));const {error}=await db.from("items").delete().eq("id",id);if(error)return toast(error.message);await loadItems();render();toast("Предмет удалён")}function copyGuestLink(){navigator.clipboard?.writeText(location.origin+location.pathname);toast("Гостевая ссылка скопирована")}function toast(s){const t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display="none",3000)}
-if(new URLSearchParams(location.search).get("view")==="guest"){document.querySelector(".nav-actions .btn:first-child").style.display="none"}
-init();
-</script>
+      <section>
+        <div class="toolbar">
+          <div class="chips" id="statusFilters">
+            <button class="chip active" type="button" data-status="all">Все</button>
+            <button class="chip" type="button" data-status="available">В наличии</button>
+            <button class="chip" type="button" data-status="busy">Занято</button>
+          </div>
+
+          <select id="sort" class="sort-select" aria-label="Сортировка">
+            <option value="name">По названию</option>
+            <option value="article">По артикулу</option>
+            <option value="status">По статусу</option>
+          </select>
+        </div>
+
+        <div id="grid" class="grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal-bg" id="loginModal">
+    <div class="modal login-modal">
+      <h2>Вход администратора</h2>
+      <div class="form">
+        <div class="field">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" autocomplete="username" placeholder="admin@example.com" />
+        </div>
+        <div class="field">
+          <label for="password">Пароль</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="Введите пароль" onkeydown="if(event.key === 'Enter') login()" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn" type="button" onclick="closeModal('loginModal')">Отмена</button>
+        <button class="btn primary" id="loginBtn" type="button" onclick="login()">Войти</button>
+      </div>
+      <div class="login-note">
+        Вход идёт через Supabase Auth. Создайте пользователя в панели Supabase → Authentication → Users и используйте его email и пароль.
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-bg" id="itemModal">
+    <div class="modal">
+      <h2 id="itemTitle">Новый предмет</h2>
+      <div class="form">
+        <div class="row">
+          <div class="field">
+            <label for="fName">Название *</label>
+            <input id="fName" />
+          </div>
+          <div class="field">
+            <label for="fArticle">Артикул</label>
+            <input id="fArticle" placeholder="Напр. REC-001" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="fCategory">Категория</label>
+            <select id="fCategory"></select>
+          </div>
+          <div class="field">
+            <label for="fStatus">Статус</label>
+            <select id="fStatus">
+              <option value="available">В наличии</option>
+              <option value="busy">Занято</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="fLocation">Место хранения</label>
+            <input id="fLocation" placeholder="Стеллаж 2 · полка 3" />
+          </div>
+          <div class="field">
+            <label for="fBooked">Кому / где занято</label>
+            <input id="fBooked" placeholder="Спектакль «...»" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Фотографии предмета</label>
+          <div class="upload-box">
+            <label class="upload-label" for="fPhotos">
+              Добавить несколько фотографий<br />
+              <small>JPG, PNG, WebP</small>
+            </label>
+            <input id="fPhotos" type="file" accept="image/*" multiple />
+          </div>
+          <div class="photo-grid" id="photoPreview"></div>
+        </div>
+
+        <div class="field">
+          <label for="fTags">Теги</label>
+          <input id="fTags" placeholder="дерево, старина, стол, чехов" />
+        </div>
+
+        <div class="field">
+          <label for="fDesc">Описание</label>
+          <textarea id="fDesc" placeholder="Краткое описание, состояние, особенности..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn" type="button" onclick="closeModal('itemModal')">Отмена</button>
+        <button class="btn primary" type="button" onclick="saveItem()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://urgxxovcrqwfuyntstin.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_5pRp2j9K_OqA5roEiJYb0A_bty8eylL";
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const state = {
+      items: [],
+      currentCategory: "Все",
+      currentStatus: "all",
+      isAdmin: false,
+      editId: null,
+      pendingPhotos: [],
+      search: "",
+      sort: "name"
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.display = "block";
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        toast.style.display = "none";
+      }, 2800);
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove("open");
+    }
+
+    async function init() {
+      const { data: { session } } = await supabase.auth.getSession();
+      state.isAdmin = !!session;
+      document.body.classList.toggle("admin", state.isAdmin);
+
+      await loadItems();
+      render();
+
+      supabase.auth.onAuthStateChange(async (_, session) => {
+        state.isAdmin = !!session;
+        document.body.classList.toggle("admin", state.isAdmin);
+        await loadItems();
+        render();
+      });
+    }
+
+    async function loadItems() {
+      const { data, error } = await supabase
+        .from("items")
+        .select("*")
+        .order("name", { ascending: true });
+
+      if (error) {
+        console.error(error);
+        showToast("Ошибка загрузки данных: " + error.message);
+        state.items = [];
+        return;
+      }
+
+      const ids = (data || []).map(item => item.id);
+      let photos = [];
+
+      if (ids.length) {
+        const { data: photoRows } = await supabase
+          .from("item_photos")
+          .select("*")
+          .in("item_id", ids)
+          .order("sort_order", { ascending: true });
+
+        photos = photoRows || [];
+      }
+
+      state.items = (data || []).map(item => ({
+        ...item,
+        photos: photos
+          .filter(photo => photo.item_id === item.id)
+          .map(photo => photo.public_url)
+      }));
+    }
+
+    function render() {
+      document.body.classList.toggle("admin", state.isAdmin);
+
+      const categories = ["Все", ...new Set(state.items.map(item => item.category).filter(Boolean))];
+      const categoryHtml = categories.map(cat => {
+        const count = cat === "Все"
+          ? state.items.length
+          : state.items.filter(item => item.category === cat).length;
+
+        return `
+          <div class="cat ${state.currentCategory === cat ? "active" : ""}" onclick="setCategory('${escapeHtml(cat)}')">
+            <span>${escapeHtml(cat)}</span>
+            <span class="count">${count}</span>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("categories").innerHTML = categoryHtml;
+      document.getElementById("total").textContent = `${state.items.length} предметов`;
+
+      const search = state.search.toLowerCase();
+      let list = state.items.filter(item => {
+        const matchesCategory = state.currentCategory === "Все" || item.category === state.currentCategory;
+        const matchesStatus = state.currentStatus === "all" || item.status === state.currentStatus;
+
+        const haystack = [
+          item.name,
+          item.article,
+          item.category,
+          item.location,
+          item.booked_for,
+          item.tags,
+          item.description
+        ].join(" ").toLowerCase();
+
+        const matchesSearch = haystack.includes(search);
+        return matchesCategory && matchesStatus && matchesSearch;
+      });
+
+      list.sort((a, b) => {
+        const aValue = String(a[state.sort] ?? "");
+        const bValue = String(b[state.sort] ?? "");
+        return aValue.localeCompare(bValue, "ru");
+      });
+
+      if (!list.length) {
+        document.getElementById("grid").innerHTML = `
+          <div class="empty">
+            Ничего не найдено.<br />
+            <small>Попробуйте изменить поиск или фильтр.</small>
+          </div>
+        `;
+        return;
+      }
+
+      document.getElementById("grid").innerHTML = list.map(renderCard).join("");
+    }
+
+    function renderCard(item) {
+      const isBusy = item.status === "busy";
+      const icon = item.category === "Мебель" ? "▣" : item.category === "Декорации" ? "◫" : "◇";
+
+      const gallery = item.photos && item.photos.length
+        ? `
+          <div class="card-gallery">
+            <img src="${item.photos[0]}" alt="${escapeHtml(item.name)}" />
+            ${item.photos.length > 1 ? `<span class="gallery-count">📷 ${item.photos.length}</span>` : ""}
+          </div>
+        `
+        : `<span>${icon}</span>`;
+
+      const tags = (item.tags || "")
+        .split(",")
+        .map(tag => tag.trim())
+        .filter(Boolean)
+        .map(tag => `<span class="tag">#${escapeHtml(tag)}</span>`)
+        .join("");
+
+      const detail = isBusy
+        ? `<br><b>Занято:</b> ${escapeHtml(item.booked_for || "—")}`
+        : "";
+
+      return `
+        <article class="card">
+          <div class="photo">
+            ${gallery}
+            <span class="status-pill ${isBusy ? "busy" : ""}">${isBusy ? "ЗАНЯТО" : "В НАЛИЧИИ"}</span>
+          </div>
+
+          <div class="card-body">
+            <h3>${escapeHtml(item.name || "Без названия")}</h3>
+            <div class="meta">
+              <b>Арт.:</b> ${escapeHtml(item.article || "—")}<br>
+              <b>Категория:</b> ${escapeHtml(item.category || "—")}<br>
+              <b>Где:</b> ${escapeHtml(item.location || "—")}${detail}
+            </div>
+
+            <div class="tags">${tags || "<span class='tag'>#без_тегов</span>"}</div>
+
+            ${state.isAdmin ? `
+              <div class="admin-actions">
+                <button class="btn" type="button" onclick="openItem('${item.id}')">Изменить</button>
+                <button class="btn danger" type="button" onclick="removeItem('${item.id}')">Удалить</button>
+              </div>
+            ` : ""}
+          </div>
+        </article>
+      `;
+    }
+
+    function setCategory(category) {
+      state.currentCategory = category;
+      render();
+    }
+
+    document.getElementById("search").addEventListener("input", (event) => {
+      state.search = event.target.value.trim();
+      render();
+    });
+
+    document.getElementById("sort").addEventListener("change", (event) => {
+      state.sort = event.target.value;
+      render();
+    });
+
+    document.querySelectorAll("#statusFilters .chip").forEach(button => {
+      button.addEventListener("click", () => {
+        state.currentStatus = button.dataset.status;
+        document.querySelectorAll("#statusFilters .chip").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        render();
+      });
+    });
+
+    async function openLogin() {
+      document.getElementById("loginModal").classList.add("open");
+      setTimeout(() => document.getElementById("loginEmail").focus(), 50);
+    }
+
+    async function login() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        showToast("Введите email и пароль");
+        return;
+      }
+
+      const btn = document.getElementById("loginBtn");
+      btn.disabled = true;
+      btn.textContent = "Вход…";
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      btn.disabled = false;
+      btn.textContent = "Войти";
+
+      if (error) {
+        console.error(error);
+        showToast("Не удалось войти: " + error.message);
+        return;
+      }
+
+      state.isAdmin = !!data.session;
+      document.body.classList.toggle("admin", state.isAdmin);
+      closeModal("loginModal");
+      await loadItems();
+      render();
+      showToast("Вы вошли как администратор");
+    }
+
+    async function logout() {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      state.isAdmin = false;
+      document.body.classList.remove("admin");
+      render();
+      showToast("Вы вышли из системы");
+    }
+
+    function openItem(id = null) {
+      if (!state.isAdmin) {
+        openLogin();
+        return;
+      }
+
+      state.editId = id;
+      const item = id ? state.items.find(entry => entry.id === id) : null;
+      const base = item || {
+        name: "",
+        article: "",
+        category: "Реквизит",
+        status: "available",
+        location: "",
+        booked_for: "",
+        tags: "",
+        description: "",
+        photos: []
+      };
+
+      state.pendingPhotos = [...(base.photos || [])];
+
+      document.getElementById("itemTitle").textContent = id ? "Редактировать предмет" : "Новый предмет";
+      document.getElementById("fName").value = base.name || "";
+      document.getElementById("fArticle").value = base.article || "";
+      document.getElementById("fStatus").value = base.status || "available";
+      document.getElementById("fLocation").value = base.location || "";
+      document.getElementById("fBooked").value = base.booked_for || "";
+      document.getElementById("fTags").value = base.tags || "";
+      document.getElementById("fDesc").value = base.description || "";
+
+      const categories = [
+        ...new Set([
+          ...state.items.map(item => item.category).filter(Boolean),
+          "Реквизит",
+          "Декорации",
+          "Мебель",
+          "Костюмы",
+          "Текстиль",
+          "Освещение",
+          "Прочее"
+        ])
+      ];
+
+      document.getElementById("fCategory").innerHTML = categories.map(category => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("");
+      document.getElementById("fCategory").value = base.category || "Реквизит";
+      renderPhotoPreview();
+      document.getElementById("itemModal").classList.add("open");
+    }
+
+    function renderPhotoPreview() {
+      const container = document.getElementById("photoPreview");
+      container.innerHTML = state.pendingPhotos.map((photo, index) => {
+        const src = typeof photo === "string" ? photo : photo.data;
+        return `
+          <div class="photo-thumb">
+            <img src="${src}" alt="Фото ${index + 1}" />
+            <button class="photo-remove" type="button" onclick="removePhoto(${index})">×</button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function removePhoto(index) {
+      state.pendingPhotos.splice(index, 1);
+      renderPhotoPreview();
+    }
+
+    document.getElementById("fPhotos").addEventListener("change", async (event) => {
+      const files = Array.from(event.target.files || []);
+
+      for (const file of files) {
+        if (!file.type.startsWith("image/")) continue;
+
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        state.pendingPhotos.push({
+          data: dataUrl,
+          name: file.name,
+          type: file.type
+        });
+      }
+
+      renderPhotoPreview();
+      event.target.value = "";
+    });
+
+    async function saveItem() {
+      const name = document.getElementById("fName").value.trim();
+      if (!name) {
+        showToast("Введите название предмета");
+        return;
+      }
+
+      const payload = {
+        name,
+        article: document.getElementById("fArticle").value.trim(),
+        category: document.getElementById("fCategory").value,
+        status: document.getElementById("fStatus").value,
+        location: document.getElementById("fLocation").value.trim(),
+        booked_for: document.getElementById("fBooked").value.trim(),
+        tags: document.getElementById("fTags").value.trim(),
+        description: document.getElementById("fDesc").value.trim()
+      };
+
+      let itemId = state.editId;
+
+      if (itemId) {
+        const { error } = await supabase.from("items").update(payload).eq("id", itemId);
+        if (error) {
+          showToast(error.message);
+          return;
+        }
+      } else {
+        const { data, error } = await supabase.from("items").insert(payload).select().single();
+        if (error) {
+          showToast(error.message);
+          return;
+        }
+        itemId = data.id;
+      }
+
+      const currentPhotos = state.pendingPhotos || [];
+      const keptUrls = currentPhotos.filter(photo => typeof photo === "string");
+      const keptBlobPhotos = currentPhotos.filter(photo => typeof photo !== "string");
+
+      const oldItem = state.items.find(entry => entry.id === itemId);
+      const oldUrls = oldItem?.photos || [];
+
+      for (const oldUrl of oldUrls) {
+        if (!keptUrls.includes(oldUrl)) {
+          const path = oldUrl.split("/storage/v1/object/public/item-photos/")?.[1];
+          if (path) {
+            await supabase.storage.from("item-photos").remove([path]);
+          }
+
+          await supabase
+            .from("item_photos")
+            .delete()
+            .eq("item_id", itemId)
+            .eq("public_url", oldUrl);
+        }
+      }
+
+      const uploadedPhotos = [];
+
+      for (const photo of keptBlobPhotos) {
+        const extension = (photo.name || "image").split(".").pop() || "jpg";
+        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
+        const path = `${itemId}/${fileName}`;
+
+        const blob = await fetch(photo.data).then(r => r.blob());
+        const { error: uploadError } = await supabase.storage.from("item-photos").upload(path, blob, {
+          contentType: blob.type || "image/jpeg",
+          upsert: false
+        });
+
+        if (uploadError) {
+          console.error(uploadError);
+          showToast("Ошибка загрузки фото: " + uploadError.message);
+          continue;
+        }
+
+        const { data: urlData } = supabase.storage.from("item-photos").getPublicUrl(path);
+        uploadedPhotos.push({
+          item_id: itemId,
+          public_url: urlData.publicUrl,
+          storage_path: path,
+          sort_order: uploadedPhotos.length + keptUrls.length
+        });
+      }
+
+      if (uploadedPhotos.length) {
+        const { error: photoInsertError } = await supabase.from("item_photos").insert(uploadedPhotos);
+        if (photoInsertError) {
+          showToast(photoInsertError.message);
+          return;
+        }
+      }
+
+      closeModal("itemModal");
+      await loadItems();
+      render();
+      showToast("Предмет сохранён");
+    }
+
+    async function removeItem(id) {
+      if (!confirm("Удалить предмет из склада?")) return;
+
+      const { data: photos, error: photoFetchError } = await supabase
+        .from("item_photos")
+        .select("storage_path")
+        .eq("item_id", id);
+
+      if (photoFetchError) {
+        showToast(photoFetchError.message);
+        return;
+      }
+
+      if (photos && photos.length) {
+        const storagePaths = photos.map(photo => photo.storage_path).filter(Boolean);
+        if (storagePaths.length) {
+          try {
+            await supabase.storage.from("item-photos").remove(storagePaths);
+          } catch (error) {
+            console.warn(error);
+          }
+        }
+      }
+
+      const { error } = await supabase.from("items").delete().eq("id", id);
+      if (error) {
+        showToast(error.message);
+        return;
+      }
+
+      await loadItems();
+      render();
+      showToast("Предмет удалён");
+    }
+
+    function copyGuestLink() {
+      const link = window.location.origin + window.location.pathname;
+      navigator.clipboard?.writeText(link).catch(() => {});
+      showToast("Ссылка скопирована");
+    }
+
+    if (new URLSearchParams(window.location.search).get("view") === "guest") {
+      const adminBtn = document.getElementById("adminBtn");
+      if (adminBtn) adminBtn.style.display = "none";
+    }
+
+    init();
+  </script>
 </body>
 </html>
